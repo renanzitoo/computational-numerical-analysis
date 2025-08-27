@@ -1,0 +1,48 @@
+# Executables
+triangularsystem
+simple-gauss
+parcial-gauss
+complete-gauss
+jordan-gauss
+
+# General executable patterns
+*.exe
+*.out
+a.out
+
+# Object files
+*.o
+*.obj
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Static libraries
+*.a
+*.lib
+
+# Shared libraries
+*.so
+*.so.*
+*.dylib
+*.dll
+
+# Temporary files
+*~
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-*
+
+# Build directories
+build/
+bin/
+obj/
