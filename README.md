@@ -48,6 +48,20 @@ This repository contains C implementations of various numerical methods for solv
 - **Description**: Iterative method using updated values immediately as calculated
 - **Compilation**: `gcc -o seidel-gauss seidel-gauss.c -lm`
 
+### Root Finding Methods
+
+#### 9. Bisection Method
+- **File**: [`bisection.c`](bisection.c)
+- **Description**: Finds roots of nonlinear equations using interval halving
+- **Compilation**: `gcc -o bisection bisection.c -lm`
+- **Usage**: `./bisection "<function>" <a> <b> <tolerance> <max_iter>`
+
+#### 10. False Position Method (Regula Falsi)
+- **File**: [`false-position.c`](false-position.c)
+- **Description**: Finds roots using linear interpolation between interval endpoints
+- **Compilation**: `gcc -o false-position false-position.c -lm`
+- **Usage**: `./false-position "<function>" <a> <b> <tolerance> <max_iter>`
+
 ## 🚀 How to Use
 
 ### Prerequisites
@@ -85,6 +99,19 @@ Iterative methods require additional parameters:
 3. **Independent terms**: n numbers (vector b)
 4. **Tolerance**: convergence criterion (e.g., 0.001)
 5. **Maximum iterations**: maximum number of iterations (e.g., 100)
+
+#### Root Finding Methods
+Root finding methods use command-line arguments:
+
+**Command format**: `./program "<function>" <a> <b> <tolerance> <max_iter>`
+- **function**: Function expression in quotes (see supported functions below)
+- **a, b**: Interval endpoints [a,b] containing the root
+- **tolerance**: Convergence criterion (e.g., 0.0001)
+- **max_iter**: Maximum number of iterations (e.g., 30)
+
+**Supported Functions**:
+- `"x*x - 4"` for f(x) = x² - 4
+- `"exp(x) - sin(x) - 2"` for f(x) = e^x - sin(x) - 2
 
 **Example for 2×2 system:**
 ```
@@ -144,6 +171,28 @@ x1 = 2.000000
 x2 = 1.000000
 ```
 
+### Root Finding Methods Examples:
+
+#### Bisection Method:
+```bash
+./bisection "x*x - 4" 1 3 0.0001 20
+```
+
+#### False Position Method:
+```bash
+./false-position "exp(x) - sin(x) - 2" 0 2 0.0001 30
+```
+
+#### Expected output (Root Finding):
+```
+Iteration 1: c = 1.000000, f(c) = -0.123189
+Iteration 2: c = 1.500000, f(c) = 1.484194
+Iteration 3: c = 1.250000, f(c) = 0.541358
+...
+Iteration 15: c = 1.054138, f(c) = 0.000026
+The approximate root is: 1.054138
+```
+
 ## 🔧 Method Characteristics
 
 | Method | Type | Pivoting | Stability | Complexity | Convergence |
@@ -156,6 +205,8 @@ x2 = 1.000000
 | LU Factorization | Direct | None | Medium | O(n³) | May fail |
 | Jacobi | Iterative | N/A | Medium | O(n²·k) | Conditional |
 | Gauss-Seidel | Iterative | N/A | Medium | O(n²·k) | Conditional |
+| Bisection | Root Finding | N/A | High | O(log₂(b-a/ε)) | Guaranteed |
+| False Position | Root Finding | N/A | High | O(k) | Guaranteed |
 
 *k = number of iterations required*
 
@@ -171,6 +222,8 @@ computational-numerical-analysis/
 ├── lu-factorization.c      # LU Factorization
 ├── jacobi-gauss.c          # Jacobi Method
 ├── seidel-gauss.c          # Gauss-Seidel Method
+├── bisection.c             # Bisection Method
+├── false-position.c        # False Position Method
 ├── README.md               # This file
 └── LICENSE                 # MIT License
 ```
@@ -184,6 +237,8 @@ This project demonstrates:
 - Matrix factorization methods (LU decomposition)
 - Iterative convergence criteria and error analysis
 - Diagonal dominance importance for iterative methods
+- Root finding algorithms for nonlinear equations
+- Bracket methods for root isolation
 - Dynamic memory management in C
 - Different approaches to the same problem
 
@@ -207,23 +262,62 @@ This project demonstrates:
 - Systems with special structure
 - When approximate solutions are acceptable
 
+## 🔍 Root Finding Methods Notes
+
+### Interval Requirements
+- **Continuous Function**: The function must be continuous on [a,b]
+- **Root Bracketing**: f(a) and f(b) must have opposite signs
+- **Single Root**: Methods find one root per interval
+
+### Method Comparison
+- **Bisection**: Always converges, slower (linear convergence)
+- **False Position**: Usually faster convergence, but may be slower in some cases
+
+### Supported Functions
+Currently implemented functions:
+- **Polynomial**: `"x*x - 4"` (x² - 4)
+- **Transcendental**: `"exp(x) - sin(x) - 2"` (e^x - sin(x) - 2)
+
+### Adding New Functions
+To add new functions, modify the `evaluate_function()` in both files:
+```c
+if (strcmp(func, "your_function") == 0) {
+    return /* your mathematical expression */;
+}
+```
+
+### Examples
+```bash
+# Finding roots of x² - 4 = 0 (roots: ±2)
+./bisection "x*x - 4" 1 3 0.0001 20          # finds x ≈ 2
+./bisection "x*x - 4" -3 -1 0.0001 20         # finds x ≈ -2
+
+# Finding root of e^x - sin(x) - 2 = 0
+./false-position "exp(x) - sin(x) - 2" 0 2 0.0001 30
+```
+
 ## ⚠️ Limitations
 
 - Single precision implementation (float)
 - No zero determinant verification for direct methods
 - Iterative methods may not converge for non-diagonally dominant matrices
+- Root finding methods support limited function set
+- Root finding requires manual interval specification
 - Command-line interface only
 - No robust input error handling
 - LU factorization without pivoting (may be unstable)
+- No derivative-based root finding methods (Newton, Secant)
 
 ## 🤝 Contributing
 
 Contributions are welcome! Feel free to:
 - Report bugs
 - Suggest improvements
-- Add new methods (SOR, Cholesky, QR, etc.)
+- Add new methods (SOR, Cholesky, QR, Newton-Raphson, Secant, etc.)
+- Add more functions to root finding methods
 - Improve documentation
 - Add double precision versions
+- Implement automatic interval finding for root methods
 
 ## 📄 License
 

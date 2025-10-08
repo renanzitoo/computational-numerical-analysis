@@ -4,6 +4,8 @@ simple-gauss
 parcial-gauss
 complete-gauss
 jordan-gauss
+bisection
+false-position
 
 # General executable patterns
 *.exe
