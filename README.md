@@ -62,6 +62,18 @@ This repository contains C implementations of various numerical methods for solv
 - **Compilation**: `gcc -o false-position false-position.c -lm`
 - **Usage**: `./false-position "<function>" <a> <b> <tolerance> <max_iter>`
 
+#### 11. Secant Method
+- **File**: [`secant-method.c`](secant-method.c)
+- **Description**: Root-finding using the secant line through two initial approximations (doesn't require derivative)
+- **Compilation**: `gcc -o secant-method secant-method.c -lm`
+- **Usage**: `./secant-method "<function>" <x0> <x1> <tolerance> <max_iter>`
+
+#### 12. Newton-Raphson Method
+- **File**: [`newton-method.c`](newton-method.c)
+- **Description**: Uses function derivative to perform Newton iterations (quadratic convergence when near root)
+- **Compilation**: `gcc -o newton-method newton-method.c -lm`
+- **Usage**: `./newton-method "<function>" <x0> <tolerance> <max_iter>`
+
 ## 🚀 How to Use
 
 ### Prerequisites
@@ -183,6 +195,17 @@ x2 = 1.000000
 ./false-position "exp(x) - sin(x) - 2" 0 2 0.0001 30
 ```
 
+#### Secant Method:
+```bash
+./secant-method "exp(x) - sin(x) - 2" 1.0 1.1 0.0001 20
+```
+
+#### Newton-Raphson Method:
+```bash
+./newton-method "exp(x) - sin(x) - 2" 1.0 0.0001 20
+```
+```
+
 #### Expected output (Root Finding):
 ```
 Iteration 1: c = 1.000000, f(c) = -0.123189
@@ -224,6 +247,10 @@ computational-numerical-analysis/
 ├── seidel-gauss.c          # Gauss-Seidel Method
 ├── bisection.c             # Bisection Method
 ├── false-position.c        # False Position Method
+├── secant-method.c         # Secant Method
+├── newton-method.c         # Newton-Raphson Method
+├── linear-system-interpolation.c # Interpolation via linear system (Vandermonde)
+├── lagrange-interpolation.c # Lagrange interpolation (expanded coefficients)
 ├── README.md               # This file
 └── LICENSE                 # MIT License
 ```
@@ -294,6 +321,8 @@ if (strcmp(func, "your_function") == 0) {
 
 # Finding root of e^x - sin(x) - 2 = 0
 ./false-position "exp(x) - sin(x) - 2" 0 2 0.0001 30
+./secant-method "exp(x) - sin(x) - 2" 1.0 1.1 0.0001 20
+./newton-method "exp(x) - sin(x) - 2" 1.0 0.0001 20
 ```
 
 ## ⚠️ Limitations
@@ -306,7 +335,7 @@ if (strcmp(func, "your_function") == 0) {
 - Command-line interface only
 - No robust input error handling
 - LU factorization without pivoting (may be unstable)
-- No derivative-based root finding methods (Newton, Secant)
+- Derivative-based methods (Newton, Secant) are implemented; when adding new functions make sure to provide correct derivative expressions for Newton's method.
 
 ## 🤝 Contributing
 
